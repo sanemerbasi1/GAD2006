@@ -6,4 +6,6 @@
 /DerivedDataCache
 /Saved
 /Intermediate
-
+/.DS_Store
+/.gitattributes
+.ignore
