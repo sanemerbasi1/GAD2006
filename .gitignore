@@ -1,11 +1,15 @@
-/.vscode
-/Binaries
-/Build
-/COA (Mac).xcworkspace
-/COA.code-workspace
-/DerivedDataCache
-/Saved
-/Intermediate
-/.DS_Store
+**/Binaries/
+**/Build/
+**/DerivedDataCache/
+**/Intermediate/
+**/Saved/
+.DS_Store
+*.xcworkspace
 
-
+**/Content/LevelPrototyping/
+**/Content/__ExternalActors__/
+**/Content/__ExternalObjects__/
+**/Content/Characters/
+**/Content/Collections/
+**/Content/Developers/
+**/Content/Input/
