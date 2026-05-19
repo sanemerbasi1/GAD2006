@@ -67,5 +67,9 @@ void AGameSlot::SetState(EGridState NewState)
 	}
 }
 
-
-
+void AGameSlot::SpawnUnitHere(TSubclassOf<AUnitBase>& UnitClass)
+{
+	FVector Location = GetActorLocation();
+	AUnitBase* NewUnit = Cast<AUnitBase>(GWorld->SpawnActor(UnitClass, &Location));
+	if (NewUnit) NewUnit->AssignToSlot(this);
+}

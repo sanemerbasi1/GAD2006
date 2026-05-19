@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
+#include "UnitBase.h"
 #include "GameSlot.generated.h"
 
 USTRUCT(Blueprintable)
@@ -46,9 +47,15 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Plane;
 
+	UPROPERTY(BlueprintReadWrite)
 	FSGridPosition GridPosition;
 
 	EGridState GridState;
+
+	UPROPERTY(VisibleAnywhere)
+	AUnitBase* Unit;
+
+	void SpawnUnitHere(TSubclassOf<AUnitBase>& UnitClass);
 
 	UFUNCTION()
 	void SetState(EGridState NewState);
