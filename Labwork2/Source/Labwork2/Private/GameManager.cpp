@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GameManager.h"
+#include "Commands/Command.h"
+#include "Commands/MoveCommand.h"
 #include "TBPlayerController.h"
 
 // Sets default values
@@ -29,7 +31,24 @@ void AGameManager::BeginPlay()
 
 void AGameManager::OnActorClicked(AActor* Actor, FKey button)
 {
-	UE_LOG(LogTemp, Warning, TEXT("GameManager received click: %s - %s"), *Actor->GetActorLabel(), *button.ToString());
+	if (CurrentCommand.IsValid() && CurrentCommand->IsExecuting()) return;
+
+	AGameSlot* Slot = Cast<AGameSlot>(Actor);
+
+	if(!Slot) return;
+
+	if (!ThePlayer){
+		UE_LOG(LogTemp, Error, TEXT("No Player Unit Detected!"));
+		return;
+	}
+	if (Slot->Unit == nullptr)
+	{
+		TSharedRef<MoveCommand> Cmd =
+	MakeShared<MoveCommand>(ThePlayer->Slot->GridPosition, Slot->GridPosition);
+		CommandPool.Add(Cmd);
+		Cmd->Execute();
+		CurrentCommand = Cmd;
+	}
 }
 
 // Called every frame
@@ -37,6 +56,9 @@ void AGameManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (CurrentCommand.IsValid()){
+		CurrentCommand->Update(DeltaTime);
+	}
 }
 
 void AGameManager::CreateLevelActors(FSLevelInfo& Info)

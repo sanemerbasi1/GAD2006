@@ -29,6 +29,8 @@ struct FSLevelInfo
 	TArray<FSUnitInfo> Units;
 };
 
+class Command;
+
 UCLASS()
 class AGameManager : public AActor
 {
@@ -61,5 +63,7 @@ public:
 
 private: 
 	AUnitBase* ThePlayer;
+	TArray<TSharedRef<Command>> CommandPool;
+	TSharedPtr<Command> 		CurrentCommand;
 
 };

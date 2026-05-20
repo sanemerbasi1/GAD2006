@@ -42,5 +42,6 @@ public:
 	static AGameSlot* FindSlot(FSGridPosition Position);
 
 private:
+
 	static AGameGrid* GameGrid;
 };

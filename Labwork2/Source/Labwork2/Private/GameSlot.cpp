@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "GameSlot.h"
+#include "TBPlayerController.h"
 
 // Sets default values
 AGameSlot::AGameSlot()
@@ -21,13 +21,24 @@ AGameSlot::AGameSlot()
 	Plane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Plane"));
 	Plane->SetupAttachment(RootComponent);
 	Plane->SetStaticMesh(DefaultSlotMesh.Object);
+
+	SetState(GS_Default);
 }
 
 // Called when the game starts or when spawned
 void AGameSlot::BeginPlay()
 {
 	Super::BeginPlay();
+	OnClicked.AddUniqueDynamic(this, &AGameSlot::OnGridClicked);
 	
+}
+
+void AGameSlot::OnGridClicked(AActor* TouchedActor, FKey ButtonPressed)
+{
+	if (auto PlayerController = GWorld->GetFirstPlayerController<ATBPlayerController>())
+	{
+		PlayerController->OnActorClicked(this, ButtonPressed);	
+	}
 }
 
 // Called every frame

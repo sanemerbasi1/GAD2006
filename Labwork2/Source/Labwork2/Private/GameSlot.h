@@ -50,17 +50,22 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	FSGridPosition GridPosition;
 
-	EGridState GridState;
-
 	UPROPERTY(VisibleAnywhere)
 	AUnitBase* Unit;
-
-	void SpawnUnitHere(TSubclassOf<AUnitBase>& UnitClass);
 
 	UFUNCTION()
 	void SetState(EGridState NewState);
 
+	void SpawnUnitHere(TSubclassOf<AUnitBase>& UnitClass);
 
+
+private: 
+
+	EGridState GridState;
+
+	UFUNCTION()
+	void OnGridClicked(AActor* TouchedActor, FKey ButtonPressed);
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
