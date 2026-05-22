@@ -44,12 +44,25 @@ void AGameManager::OnActorClicked(AActor* Actor, FKey button)
 	if (Slot->Unit == nullptr)
 	{
 		TSharedRef<MoveCommand> Cmd =
-	MakeShared<MoveCommand>(ThePlayer->Slot->GridPosition, Slot->GridPosition);
+		MakeShared<MoveCommand>(ThePlayer->Slot->GridPosition, Slot->GridPosition);
 		CommandPool.Add(Cmd);
 		Cmd->Execute();
 		CurrentCommand = Cmd;
 	}
 }
+
+bool AGameManager::UndoLastMove()
+{
+	if (CommandPool.Num() > 0)
+{		
+		TSharedRef<Command> Cmd = CommandPool.Pop();
+		Cmd->Revert();
+		CurrentCommand = Cmd;
+		return true;
+}
+	return false;
+}
+
 
 // Called every frame
 void AGameManager::Tick(float DeltaTime)

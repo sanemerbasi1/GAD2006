@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "MoveCommand.h"
 #include "GameGrid.h"
 
@@ -29,5 +28,11 @@ void MoveCommand::Execute()
 
 void MoveCommand::Revert()
 {
-     
+     UE_LOG(LogTemp, Warning, TEXT("Reverting MoveCommand..."));
+     AGameSlot* SlotA = AGameGrid::FindSlot(Source);
+     AGameSlot* SlotB = AGameGrid::FindSlot(Destination);
+     AUnitBase* UnitA = SlotB->Unit;
+    check(UnitA);
+    UnitA->AssignToSlot(SlotA);
+    SlotB->SetState(GS_Default);
 }

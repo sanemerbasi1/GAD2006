@@ -44,6 +44,9 @@ public:
 
 	void CreateLevelActors(FSLevelInfo& Info);
 
+	UFUNCTION(BlueprintCallable)
+	bool UndoLastMove();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int CurrentLevel;
 
