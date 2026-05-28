@@ -21,6 +21,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* GridSelection;
 
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* CurrentTile;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

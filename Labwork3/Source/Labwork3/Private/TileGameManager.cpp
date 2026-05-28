@@ -17,11 +17,15 @@ ATileGameManager::ATileGameManager() :
 	GridSelection = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GridMesh"));
 	GridSelection->SetupAttachment(RootComponent);
 
+	CurrentTile = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CurrentTileMesh"));
+	CurrentTile->SetupAttachment(GridSelection);
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> 
 		PlaneMesh(TEXT("StaticMesh'/Engine/BasicShapes/Plane.Plane'"));
 
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> 
 		GridMaterial(TEXT("Material'/Game/UI/MAT_GridSlot.MAT_GridSlot'"));
+		
 
 	GridSelection->SetStaticMesh(PlaneMesh.Object);
 	GridSelection->SetMaterial(0, GridMaterial.Object);
@@ -82,7 +86,7 @@ void ATileGameManager::OnActorInteraction(AActor* HitActor,
 
 			FTransform TileTransform(GridLoc + GridOffset);
 			SelectedTile->InstancedMesh->AddInstance(
-				SelectedTile->InstancedMesh->GetRelativeTransform() * TileTransform,
+			SelectedTile->InstancedMesh->GetRelativeTransform() * TileTransform,
 				true);
 		}
 
@@ -104,8 +108,31 @@ else if (Input->WasJustPressed(EKeys::MouseScrollDown))
 {
 	CurrentTileIndex = (CurrentTileIndex + 1) % TileTypes.Num();
 	UE_LOG(LogTemp, Warning, TEXT("TileType: %s"), *TileTypes[CurrentTileIndex]->GetActorLabel());
+
 } else {
 	GridSelection->SetWorldLocation(GridLoc + GridOffset);
+	CurrentTile->SetStaticMesh(TileTypes[CurrentTileIndex]->InstancedMesh->GetStaticMesh());
+	CurrentTile->SetRelativeScale3D(TileTypes[CurrentTileIndex]->InstancedMesh->GetRelativeScale3D());
+	CurrentTile->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 }
 
+if (Input->WasJustPressed(EKeys::MouseScrollUp))
+{
+	CurrentTileIndex = (CurrentTileIndex - 1 + TileTypes.Num()) % TileTypes.Num();
+	UE_LOG(LogTemp, Warning, TEXT("TileType: %s"), *TileTypes[CurrentTileIndex]->GetActorLabel());
+
+} else {
+	GridSelection->SetWorldLocation(GridLoc + GridOffset);
+	CurrentTile->SetStaticMesh(TileTypes[CurrentTileIndex]->InstancedMesh->GetStaticMesh());
+	CurrentTile->SetRelativeScale3D(TileTypes[CurrentTileIndex]->InstancedMesh->GetRelativeScale3D());
+	CurrentTile->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+}
+
+if (Input->WasJustPressed(EKeys::RightMouseButton))
+{
+	FRotator CurrentRotation = GridSelection->GetRelativeRotation();
+	GridSelection->SetRelativeRotation(FRotator(0, CurrentRotation.Yaw + 90, 0));
+}
 }
