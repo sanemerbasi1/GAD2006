@@ -8,9 +8,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "NetAvatar.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class ANetAvatar : public ANetBaseCharacter
 {
@@ -30,6 +27,9 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	UPROPERTY(BlueprintReadWrite)
+	float MovementScale;
+	
 private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);

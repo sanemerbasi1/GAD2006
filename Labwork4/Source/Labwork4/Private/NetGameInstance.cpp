@@ -2,6 +2,7 @@
 
 
 #include "NetGameInstance.h"
+#include "GameFramework/GameModeBase.h"
 
 void UNetGameInstance::Host(FString MapName, const FSPlayerInfo Info)
 {
